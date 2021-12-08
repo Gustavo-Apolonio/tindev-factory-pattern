@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 
 import createDevDatabase from "../databases/DevDatabase.js";
 
@@ -19,13 +19,18 @@ export default function createDevService() {
 
     verifyUsername(dev.user);
 
+    if (dev.password === "")
+      throw "Please, insert a password to register yourself...";
+
     if (dev.avatar === "") throw "Please, insert an avatar...";
   }
 
   async function verifyPassword(password, devPassword) {
-    const passwordMatch = await bcrypt.compare(password, devPassword)
+    if (password === "") throw "Please, insert your password...";
 
-    if (!passwordMatch) throw "Incorrect password..."
+    const passwordMatch = await bcrypt.compare(password, devPassword);
+
+    if (!passwordMatch) throw "Incorrect password...";
   }
 
   async function getDevById(id) {

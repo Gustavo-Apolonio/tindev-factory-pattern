@@ -16,7 +16,7 @@ export default function createDevDatabase() {
   }
 
   async function getDevByUsername(username) {
-    const resp = await DevModel.find({ user: username });
+    const resp = await DevModel.findOne({ user: username });
     return resp;
   }
 
