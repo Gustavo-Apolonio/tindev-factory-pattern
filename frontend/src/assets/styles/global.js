@@ -6,6 +6,12 @@ const globalStyle = createGlobalStyle`
         padding: 0px;
         box-sizing: border-box;
         background-color: #f5f5f5;
+        font-size: 14px;
+    }
+
+    h1, h2, h3, h4, h5, h6, p {
+        margin: 0px;
+        padding: 0px;
     }
 
     input {
@@ -21,12 +27,11 @@ const globalStyle = createGlobalStyle`
     }
 
     *::-webkit-scrollbar-track {
-        background-color: rgba(158, 158, 158, 1);
+        background-color: #bbb;
     }
 
     *::-webkit-scrollbar-thumb {
-        background-color: rgba(158, 158, 158, 0.5);
-        border-radius: 2em;
+        background-color: #df4723;
     }
 `;
 

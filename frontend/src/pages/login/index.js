@@ -31,7 +31,7 @@ export default function Login() {
 
       sessionStorage.setItem("@tindev/token", resp.token);
 
-      navigation("/tindev", { state: resp.dev });
+      navigation("/tindev", { state: { dev: resp.dev } });
 
       setLoading(false);
 
