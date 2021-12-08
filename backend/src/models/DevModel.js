@@ -12,7 +12,7 @@ const devSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
     bio: String,
     avatar: {

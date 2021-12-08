@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import http from "http";
-import { Server } from "socket.io"
+import { Server } from "socket.io";
 
 import Next from "./src/middlewares/nextMiddleware.js";
 import createDatabaseConnection from "./src/databases/scripts/index.js";
@@ -17,7 +17,6 @@ function startServer() {
 
   const connectedDevs = {};
   io.on("connection", (socket) => {
-    console.log(socket)
     const { devId } = socket.handshake.query;
 
     connectedDevs[devId] = socket.id;
