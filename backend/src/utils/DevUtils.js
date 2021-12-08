@@ -27,8 +27,14 @@ export default function createDevUtils() {
     return createDevRes(dev._id, dev.name, dev.bio, dev.avatar);
   }
 
+  function ToResponses(devs) {
+    const resp = devs.map((dev) => ToResponse(dev));
+    return resp;
+  }
+
   return {
     ToTable,
     ToResponse,
+    ToResponses,
   };
 }

@@ -7,7 +7,7 @@ export default function createDevService() {
   const db = createDevDatabase();
 
   function verifyId(id) {
-    if (!mongoose.isValidObjectId(id)) throw "ID is invalid...";
+    if (!mongoose.isValidObjectId(id)) throw "Invalid id...";
   }
 
   function verifyUsername(username) {

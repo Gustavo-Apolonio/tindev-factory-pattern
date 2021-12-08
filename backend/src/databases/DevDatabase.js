@@ -8,7 +8,11 @@ export default function createDevDatabase() {
 
   async function getDevs(dev) {
     const filters = {
-      $and: [{ _id: { $ne: dev._id } }, { _id: { $nin: dev.likes } }],
+      $and: [
+        { _id: { $ne: dev._id } },
+        { _id: { $nin: dev.likes } },
+        { _id: { $nin: dev.dislikes } },
+      ],
     };
 
     const resp = await DevModel.find(filters);
@@ -25,28 +29,10 @@ export default function createDevDatabase() {
     return resp;
   }
 
-  async function likeDev(loggedDev, targetDev) {
-    loggedDev.likes.push(targetDev._id);
-
-    await loggedDev.save();
-
-    return loggedDev;
-  }
-
-  async function dislikeDev(loggedDev, targetDev) {
-    loggedDev.dislikes.push(targetDev._id);
-
-    await loggedDev.save();
-
-    return loggedDev;
-  }
-
   return {
     getDevById,
     getDevs,
     getDevByUsername,
     createDev,
-    likeDev,
-    dislikeDev,
   };
 }

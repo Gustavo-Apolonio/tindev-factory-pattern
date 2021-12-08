@@ -9,6 +9,8 @@ import createGitHubAccess from "../utils/GitHubAccess.js";
 
 import createError from "../models/res/ErrorRes.js";
 
+import auth from "../middlewares/authMiddleware.js";
+
 dotenv.config();
 
 const router = Router();
@@ -92,6 +94,25 @@ router.post("/app", async (req, res) => {
       req.dev = user;
       return login(req, res);
     }
+  } catch (error) {
+    return res.status(400).send(createError(400, error));
+  }
+});
+
+router.get("/", auth, async (req, res) => {
+  try {
+    const dev_id = req.dev_id || "";
+
+    const dev = await srv.getDevById(dev_id);
+
+    if (!dev || !mongoose.isValidObjectId(dev._id))
+      return res.status(404).send(createError(404, "User not found..."));
+
+    const devs = await srv.getDevs(dev);
+
+    const resp = cnv.ToResponses(devs);
+
+    return res.status(200).send(resp);
   } catch (error) {
     return res.status(400).send(createError(400, error));
   }
