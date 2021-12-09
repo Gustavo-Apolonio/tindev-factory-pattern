@@ -51,15 +51,15 @@ async function createUser(req, res) {
       return res
         .status(404)
         .send(createError(404, "Git Hub User not found..."));
-    
-    req.body.username = gitInfo.user
-    
-    const user = await srv.getDevByUsername(gitInfo.user)
+
+    req.body.username = gitInfo.user;
+
+    const user = await srv.getDevByUsername(gitInfo.user);
 
     if (user) {
-      return login(req, res)
+      return login(req, res);
     }
-    
+
     const password = req.body.password || "";
 
     const tableDev = await cnv.ToTable(
