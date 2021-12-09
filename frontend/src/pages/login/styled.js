@@ -16,7 +16,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
 
-    visibility: ${(props) => (props.loading ? "visible" : "hidden")};
+    visibility: ${(props) => (props.load ? "visible" : "hidden")};
   }
 `;
 

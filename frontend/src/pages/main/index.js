@@ -75,7 +75,12 @@ export default function Main() {
     });
 
     socket.on("match", (dev) => setMatch(dev));
-  }, [devId]);
+    socket.on("newDev", (dev) => {
+      let devsCopy = devs
+      devsCopy.push(dev.dev)
+      setDevs([...devsCopy])
+    })
+  }, [devId, devs]);
 
   return (
     <div>

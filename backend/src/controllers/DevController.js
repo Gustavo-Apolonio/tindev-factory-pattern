@@ -81,7 +81,17 @@ async function createUser(req, res) {
             "It wasn't possible to create an user... Please, try again later!"
           )
         );
+    
+    Object.keys(req.connectedDevs).map((connectedDev) => {
+      const devSocket = req.connectedDevs[connectedDev];
 
+      const io = req.io
+
+      const newDev = cnv.ToResponse(dev);
+
+      io.to(devSocket).emit("newDev", { dev: newDev });
+    });
+    
     return login(req, res);
   } catch (error) {
     return res.status(400).send(createError(400, error));

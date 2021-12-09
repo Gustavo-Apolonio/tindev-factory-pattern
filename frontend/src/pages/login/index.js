@@ -68,20 +68,20 @@ export default function Login() {
   };
 
   return (
-    <Container loading={loading}>
+    <Container load={loading}>
       <Img src={logo} alt="TINDEV" />
       <Form>
         <input
           type="text"
           placeholder="Your GitHub user"
-          autoComplete={false}
+          autoComplete="off"
           onChange={(e) => setUsername(e.target.value)}
           onKeyUp={enterKey}
         />
         <input
           type="password"
           placeholder="Your password"
-          autoComplete={false}
+          autoComplete="off"
           onChange={(e) => setPassword(e.target.value)}
           onKeyUp={(e) => enterKey(e)}
         />
