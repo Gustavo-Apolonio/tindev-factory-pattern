@@ -51,7 +51,15 @@ async function createUser(req, res) {
       return res
         .status(404)
         .send(createError(404, "Git Hub User not found..."));
+    
+    req.body.username = gitInfo.user
+    
+    const user = await srv.getDevByUsername(gitInfo.user)
 
+    if (user) {
+      return login(req, res)
+    }
+    
     const password = req.body.password || "";
 
     const tableDev = await cnv.ToTable(
@@ -74,8 +82,6 @@ async function createUser(req, res) {
           )
         );
 
-    req.dev = dev;
-
     return login(req, res);
   } catch (error) {
     return res.status(400).send(createError(400, error));
@@ -91,7 +97,6 @@ router.post("/app", async (req, res) => {
     if (!user || !mongoose.isValidObjectId(user._id))
       return createUser(req, res);
     else {
-      req.dev = user;
       return login(req, res);
     }
   } catch (error) {
