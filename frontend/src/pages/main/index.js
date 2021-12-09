@@ -1,24 +1,23 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-import { CardsContainer, Empty } from "./styled";
+import createAPI from "../../services/api.js";
+import io from "socket.io-client";
+
+import { CardsContainer, Empty } from "./styled.js";
 
 import avatar from "../../assets/images/defaultUser.svg";
 
 import Header from "../../components/header";
-
 import DevCard from "../../components/devCard";
-
 import Match from "../../components/match";
-
-import { toast } from "react-toastify";
-
-import io from "socket.io-client";
-import createAPI from "../../services/api";
 
 const api = createAPI();
 
 export default function Main() {
+  const token = sessionStorage.getItem("@tindev/token");
+
   const navigation = useNavigate();
   const location = useLocation();
   const state = location.state;
@@ -30,9 +29,8 @@ export default function Main() {
   };
   const devId = dev.id;
 
-  const token = sessionStorage.getItem("@tindev/token");
-
   const [devs, setDevs] = useState([]);
+  const [match, setMatch] = useState(null);
 
   const loadDevs = useCallback(async () => {
     try {
@@ -69,8 +67,6 @@ export default function Main() {
   useEffect(() => {
     loadDevs();
   }, [token, loadDevs]);
-
-  const [match, setMatch] = useState(null);
 
   useEffect(() => {
     const socket = io("http://localhost:5000", {

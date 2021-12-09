@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PuffLoader from "react-spinners/PuffLoader";
+import { toast } from "react-toastify";
+
+import createAPI from "../../services/api.js";
 
 import { Container, Img, Form } from "./styled.js";
 
 import logo from "../../assets/images/logo.svg";
 
-import PuffLoader from "react-spinners/PuffLoader";
-
-import { toast } from "react-toastify";
-
-import createAPI from "../../services/api.js";
 const api = createAPI();
 
 export default function Login() {
+  const navigation = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const navigation = useNavigate();
 
   const enterApp = async () => {
     try {

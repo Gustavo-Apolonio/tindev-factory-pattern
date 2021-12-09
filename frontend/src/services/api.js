@@ -16,16 +16,24 @@ export default function createAPI() {
   }
 
   async function dislike(token, targetId) {
-    const resp = await api.post(`/dislike/${targetId}`, {}, {
-      headers: { "x-access-token": token },
-    });
+    const resp = await api.post(
+      `/dislike/${targetId}`,
+      {},
+      {
+        headers: { "x-access-token": token },
+      }
+    );
     return resp.data;
   }
 
   async function like(token, targetId) {
-    const resp = await api.post(`/like/${targetId}`, {}, {
-      headers: { "x-access-token": token },
-    });
+    const resp = await api.post(
+      `/like/${targetId}`,
+      {},
+      {
+        headers: { "x-access-token": token },
+      }
+    );
     return resp.data;
   }
 

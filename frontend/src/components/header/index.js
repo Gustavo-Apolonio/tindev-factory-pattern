@@ -7,13 +7,13 @@ import logo from "../../assets/images/logo.svg";
 import logoutIcon from "../../assets/images/logout.svg";
 
 export default function Header(props) {
+  const navigation = useNavigate();
+
   const { name, avatar } = props.dev;
 
   let firstName = name.includes(" ")
     ? name.substring(0, name.indexOf(" "))
     : name;
-
-  const navigation = useNavigate();
 
   const logout = () => {
     sessionStorage.clear();

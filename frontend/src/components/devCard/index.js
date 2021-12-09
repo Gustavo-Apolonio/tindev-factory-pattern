@@ -1,23 +1,23 @@
 import React from "react";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
-import { Container, Footer, Buttons } from "./styled";
+import createAPI from "../../services/api.js";
+
+import { Container, Footer, Buttons } from "./styled.js";
 
 import dislike from "../../assets/images/dislike.svg";
 import like from "../../assets/images/like.svg";
 
-import createAPI from "../../services/api";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router";
-
 const api = createAPI();
 
 export default function DevCard(props) {
-  const dev = props.dev;
-    const token = props.token;
-    
-    const devs = props.devs
-
   const navigation = useNavigate();
+
+  const dev = props.dev;
+  const token = props.token;
+
+  const devs = props.devs;
 
   const handleDislike = async (id) => {
     try {

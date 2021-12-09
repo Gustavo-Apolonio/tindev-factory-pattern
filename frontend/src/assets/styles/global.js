@@ -4,8 +4,11 @@ const globalStyle = createGlobalStyle`
     html, body {
         margin: 0px;
         padding: 0px;
+
         box-sizing: border-box;
+        
         background-color: #f5f5f5;
+        
         font-size: 14px;
     }
 

@@ -10,11 +10,12 @@ const Container = styled.div`
   justify-content: center;
 
   .loader {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     visibility: ${(props) => (props.loading ? "visible" : "hidden")};
   }
 `;
@@ -37,7 +38,6 @@ const Form = styled.div`
     height: 25%;
 
     border: 1px solid #ddd;
-
     border-radius: 5px;
 
     padding: 0px 5px;
@@ -59,13 +59,19 @@ const Form = styled.div`
   button {
     width: calc(100% + 10px);
     height: 25%;
+
     padding: 0px 5px;
+
     border: 1px solid #ddd;
     border-radius: 5px;
+
     font-size: 16px;
-    background-color: #df4723;
     color: #ddd;
+
+    background-color: #df4723;
+
     cursor: pointer;
+
     transition: all 0.2s;
 
     &:hover {

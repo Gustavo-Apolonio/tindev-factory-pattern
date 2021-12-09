@@ -4,26 +4,28 @@ const Container = styled.div`
   width: calc(100% - 10px);
   height: calc(7.5vh - 10px);
 
-  padding: 5px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
 
+  padding: 5px;
+
   background-color: #bbb;
 
   position: fixed;
+
   top: 0;
 
   button {
+    height: 100%;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
     background-color: transparent;
-    border: none;
 
-    height: 100%;
+    border: none;
 
     & img:hover {
       cursor: pointer;
