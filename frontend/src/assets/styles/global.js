@@ -21,6 +21,11 @@ const globalStyle = createGlobalStyle`
         background-color: #f5f5f5;
     }
 
+    button:focus-visible, a:focus-visible {
+      outline-offset: 0px;
+      outline: none;
+    }
+
     * {
         font-family: "Oswald";
     }

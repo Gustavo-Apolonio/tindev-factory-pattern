@@ -15,7 +15,7 @@ export default function Match(props) {
         <Avatar src={dev.avatar} alt={`Perfil de ${dev.name}`} />
         <strong>{dev.name}</strong>
         <p>{dev.bio}</p>
-        <button onClick={() => setMatch(null)}>Fechar</button>
+        <button onClick={() => setMatch(null)}>Close</button>
       </Container>
     )
   );
