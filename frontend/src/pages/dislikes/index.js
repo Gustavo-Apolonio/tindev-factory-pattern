@@ -2,23 +2,22 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import createAPI from "../../services/api.js";
-import io from "socket.io-client";
-
-import { CardsContainer, Empty } from "./styled.js";
+import Header from "../../components/header";
+import DevCard from "../../components/devCard";
 
 import avatar from "../../assets/images/defaultUser.svg";
 
-import Header from "../../components/header";
-import DevCard from "../../components/devCard";
-import Match from "../../components/match";
+import { CardsContainer, Empty } from "../main/styled.js";
+
+import createAPI from "../../services/api.js";
 
 const api = createAPI();
 
-export default function Main() {
+export default function Disliked() {
   const token = sessionStorage.getItem("@tindev/token");
 
   const navigation = useNavigate();
+
   const location = useLocation();
   const state = location.state;
   const dev = state.dev || {
@@ -27,14 +26,12 @@ export default function Main() {
     bio: null,
     avatar,
   };
-  const devId = dev.id;
 
   const [devs, setDevs] = useState([]);
-  const [match, setMatch] = useState(null);
 
   const loadDevs = useCallback(async () => {
     try {
-      const resp = await api.devs(token);
+      const resp = await api.disliked(token);
 
       setDevs([...resp]);
     } catch (error) {
@@ -62,29 +59,16 @@ export default function Main() {
           break;
       }
     }
-  }, [token, navigation]);
+  }, [navigation, token]);
 
   useEffect(() => {
     loadDevs();
   }, [token, loadDevs]);
 
-  useEffect(() => {
-    const socket = io("http://localhost:5000", {
-      query: { devId: devId },
-      transports: ["websocket"],
-    });
-
-    socket.on("match", (dev) => setMatch(dev));
-    socket.on("newDev", (dev) => {
-      let devsCopy = devs;
-      devsCopy.push(dev.dev);
-      setDevs([...devsCopy]);
-    });
-  }, [devId, devs]);
-
   return (
     <div>
-      <Header dev={dev} page="main" />
+      <Header dev={dev} page="disliked" />
+
       {devs.length > 0 ? (
         <CardsContainer>
           {devs.map((dev) => (
@@ -93,15 +77,13 @@ export default function Main() {
               dev={dev}
               devs={{ devs, setDevs }}
               token={token}
-              show="both"
+              show="disliked"
             />
           ))}
         </CardsContainer>
       ) : (
-        <Empty>You've cleaned tindev...</Empty>
+        <Empty>You haven't disliked any dev yet... :)</Empty>
       )}
-
-      {match && <Match devMatched={match} setMatch={setMatch} />}
     </div>
   );
 }

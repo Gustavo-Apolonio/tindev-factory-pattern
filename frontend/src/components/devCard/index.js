@@ -18,6 +18,8 @@ export default function DevCard(props) {
 
   const devs = props.devs;
 
+  const show = props.show;
+
   const handleDislike = async (id) => {
     try {
       const resp = await api.dislike(token, id);
@@ -97,12 +99,12 @@ export default function DevCard(props) {
   return (
     <Container>
       <img className="profile" src={dev.avatar} alt={`${dev.name}'s Profile`} />
-      <Footer>
+      <Footer show={show}>
         <strong>{dev.name}</strong>
         <p>{dev.bio}</p>
       </Footer>
 
-      <Buttons>
+      <Buttons show={show}>
         <Button dislike type="button" onClick={() => handleDislike(dev.id)}>
           <Dislike />
         </Button>

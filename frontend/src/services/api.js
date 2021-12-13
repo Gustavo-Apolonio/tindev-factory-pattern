@@ -37,10 +37,26 @@ export default function createAPI() {
     return resp.data;
   }
 
+  async function liked(token) {
+    const resp = await api.get("/liked", {
+      headers: { "x-access-token": token },
+    });
+    return resp.data;
+  }
+
+  async function disliked(token) {
+    const resp = await api.get("/disliked", {
+      headers: { "x-access-token": token },
+    });
+    return resp.data;
+  }
+
   return {
     enter,
     devs,
     dislike,
     like,
+    liked,
+    disliked,
   };
 }

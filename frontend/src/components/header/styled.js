@@ -158,6 +158,19 @@ const Menu = styled.div`
 
     transition: all 0.5s;
   }
+
+  a:nth-child(2) {
+    display: ${(props) => (props.page === "liked" ? "none" : "block")};
+  }
+
+  a:nth-child(3) {
+    display: ${(props) => (props.page === "disliked" ? "none" : "block")};
+  }
+
+  a:nth-child(4) {
+    display: ${(props) => (props.page === "main" ? "none" : "block")};
+    font-size: 24px;
+  }
 `;
 
 export { Container, Profile, Menu };

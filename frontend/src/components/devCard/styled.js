@@ -32,6 +32,12 @@ const Footer = styled.footer`
     font-size: 16px;
 
     color: #333;
+    color: ${(props) =>
+      props.show === "both"
+        ? "#333"
+        : props.show === "liked"
+        ? "#14e29a"
+        : "#fd2c7a"};
   }
 
   p {
@@ -45,7 +51,7 @@ const Footer = styled.footer`
 `;
 
 const Buttons = styled.div`
-  display: grid;
+  display: ${(props) => (props.show === "both" ? "grid" : "none")};
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
 

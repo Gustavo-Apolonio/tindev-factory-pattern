@@ -9,12 +9,15 @@ import {
   IoMdHeartDislike as Dislike,
   IoMdHeart as Like,
   IoIosClose as Close,
+  IoIosCodeWorking as Code,
 } from "react-icons/io";
 
 export default function Header(props) {
   const navigation = useNavigate();
 
-  const { name, avatar } = props.dev;
+  const dev = props.dev;
+
+  const { name, avatar } = dev;
 
   let firstName = name.includes(" ")
     ? name.substring(0, name.indexOf(" "))
@@ -31,23 +34,28 @@ export default function Header(props) {
     menu.classList.toggle("active");
   };
 
+  const page = props.page;
+
   return (
     <Container>
       <Profile id="menu">
         <img className="profile" src={avatar} alt="Profile" />
         <button className="myBtn toggle" onClick={toggleActive}></button>
         <h2>{firstName}</h2> &nbsp; | &nbsp; <img src={logo} alt="TINDEV" />
-        <Menu>
+        <Menu page={page}>
           <button onClick={toggleActive} className="myBtn closeToggle">
             <Close />
           </button>
-          <Link to={`/tindev/${firstName}/likes`}>
+          <Link to={`/tindev/${firstName}/likes`} state={{ dev }}>
             <Like />
             Devs
           </Link>
-          <Link to={`/tindev/${firstName}/dislikes`}>
+          <Link to={`/tindev/${firstName}/dislikes`} state={{ dev }}>
             <Dislike />
             Devs
+          </Link>
+          <Link to={`/tindev`} state={{ dev }}>
+            <Code />
           </Link>
         </Menu>
       </Profile>
