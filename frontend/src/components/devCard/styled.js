@@ -67,11 +67,40 @@ const Buttons = styled.div`
       transition: all 0.2s;
     }
 
-    &:hover img {
+    &:hover svg {
       transform: translateY(-2.5px);
       transition: all 0.2s;
     }
   }
 `;
 
-export { Container, Footer, Buttons };
+const Button = styled.button`
+  height: 50px;
+
+  border: none;
+  border-radius: 4px;
+
+  background: #fff;
+
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.5);
+
+  font-size: 27px;
+
+  transition: all 0.2s;
+
+  color: ${(props) => (props.like ? "#14E29A" : "#FD2C7A")};
+
+  &:hover {
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.5);
+    color: ${(props) => (props.like ? "#58EED7" : "#FF7255")};
+
+    transition: all 0.2s;
+  }
+
+  &:hover svg {
+    transform: translateY(-2.5px);
+    transition: all 0.2s;
+  }
+`;
+
+export { Container, Footer, Buttons, Button };

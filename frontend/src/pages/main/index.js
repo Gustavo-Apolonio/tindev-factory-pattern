@@ -97,7 +97,7 @@ export default function Main() {
           ))}
         </CardsContainer>
       ) : (
-        <Empty>Você zerou o Tindev...</Empty>
+        <Empty>You've cleaned tindev...</Empty>
       )}
 
       {match && <Match devMatched={match} setMatch={setMatch} />}

@@ -13,6 +13,8 @@ export default function Router() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/tindev" element={<Main />} />
+        <Route path="/tindev/:name/likes" element={<Main />} />
+        <Route path="/tindev/:name/dislikes" element={<Main />} />
       </Routes>
       <ToastContainer />
     </BrowserRouter>

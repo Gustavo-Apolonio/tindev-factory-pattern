@@ -16,7 +16,7 @@ const Container = styled.div`
 
   top: 0;
 
-  button {
+  .myBtn {
     height: 100%;
 
     display: flex;
@@ -27,18 +27,29 @@ const Container = styled.div`
 
     border: none;
 
-    & img:hover {
-      cursor: pointer;
-    }
+    cursor: pointer;
+  }
 
-    & img {
-      height: 100%;
-      width: 100%;
+  button.logoutBtn {
+    & svg:hover {
+      cursor: pointer;
     }
 
     &:focus-visible {
       outline-offset: 0px;
       outline: none;
+    }
+
+    font-size: 30px;
+
+    &:hover svg {
+      transform: translateY(-1.5px);
+      transition: all 0.7s;
+    }
+
+    &:hover {
+      color: #df4723;
+      transition: all 0.2s;
     }
   }
 `;
@@ -57,6 +68,96 @@ const Profile = styled.div`
     border-radius: 100%;
     border: 1.5px solid #df4723;
   }
+
+  .toggle {
+    position: absolute;
+
+    z-index: 10000;
+
+    width: 18em;
+  }
+
+  &.active div {
+    z-index: 10000;
+
+    button.closeToggle {
+      color: #ff1c46;
+    }
+
+    button.closeToggle:hover {
+      color: #ff4a6b;
+      transition: all 0.2s;
+    }
+
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    a {
+      color: #df4723;
+    }
+
+    a:nth-child(3) {
+      color: #fd2c7a;
+    }
+
+    a:nth-child(2) {
+      color: #14e29a;
+    }
+
+    a:hover {
+      text-decoration: underline;
+
+      transition: all 0.2s;
+    }
+
+    a:nth-child(3):hover {
+      color: #ff7255;
+    }
+
+    a:nth-child(2):hover {
+      color: #58eed7;
+    }
+  }
 `;
 
-export { Container, Profile };
+const Menu = styled.div`
+  user-select: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  width: 12em;
+
+  margin-left: 5px;
+
+  transition: 0.5s;
+
+  border-radius: 5px;
+
+  z-index: -10000;
+
+  a {
+    color: transparent;
+    transform: rotate(calc(-360deg / -8 * var(--i)));
+
+    padding: 5px;
+
+    font-size: 18px;
+
+    text-decoration: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: all 0.5s;
+  }
+
+  button.closeToggle {
+    font-size: 30px;
+    color: rgba(0, 0, 0, 0);
+
+    transition: all 0.5s;
+  }
+`;
+
+export { Container, Profile, Menu };

@@ -4,10 +4,9 @@ import { toast } from "react-toastify";
 
 import createAPI from "../../services/api.js";
 
-import { Container, Footer, Buttons } from "./styled.js";
+import { Container, Footer, Buttons, Button } from "./styled.js";
 
-import dislike from "../../assets/images/dislike.svg";
-import like from "../../assets/images/like.svg";
+import { IoMdHeartDislike as Dislike, IoMdHeart as Like } from "react-icons/io";
 
 const api = createAPI();
 
@@ -104,12 +103,12 @@ export default function DevCard(props) {
       </Footer>
 
       <Buttons>
-        <button type="button" onClick={() => handleDislike(dev.id)}>
-          <img src={dislike} alt="Dislike" />
-        </button>
-        <button type="button" onClick={() => handleLike(dev.id)}>
-          <img src={like} alt="Like" />
-        </button>
+        <Button dislike type="button" onClick={() => handleDislike(dev.id)}>
+          <Dislike />
+        </Button>
+        <Button like type="button" onClick={() => handleLike(dev.id)}>
+          <Like />
+        </Button>
       </Buttons>
     </Container>
   );
