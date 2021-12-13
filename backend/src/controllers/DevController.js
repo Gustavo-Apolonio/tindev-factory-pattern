@@ -81,17 +81,17 @@ async function createUser(req, res) {
             "It wasn't possible to create an user... Please, try again later!"
           )
         );
-    
+
     Object.keys(req.connectedDevs).map((connectedDev) => {
       const devSocket = req.connectedDevs[connectedDev];
 
-      const io = req.io
+      const io = req.io;
 
       const newDev = cnv.ToResponse(dev);
 
       io.to(devSocket).emit("newDev", { dev: newDev });
     });
-    
+
     return login(req, res);
   } catch (error) {
     return res.status(400).send(createError(400, error));
@@ -124,6 +124,44 @@ router.get("/", auth, async (req, res) => {
       return res.status(404).send(createError(404, "User not found..."));
 
     const devs = await srv.getDevs(dev);
+
+    const resp = cnv.ToResponses(devs);
+
+    return res.status(200).send(resp);
+  } catch (error) {
+    return res.status(400).send(createError(400, error));
+  }
+});
+
+router.get("/liked", auth, async (req, res) => {
+  try {
+    const dev_id = req.dev_id || "";
+
+    const dev = await srv.getDevById(dev_id);
+
+    if (!dev || !mongoose.isValidObjectId(dev._id))
+      return res.status(404).send(createError(404, "User not found..."));
+
+    const devs = await srv.getLikedDevs(dev);
+
+    const resp = cnv.ToResponses(devs);
+
+    return res.status(200).send(resp);
+  } catch (error) {
+    return res.status(400).send(createError(400, error));
+  }
+});
+
+router.get("/disliked", auth, async (req, res) => {
+  try {
+    const dev_id = req.dev_id || "";
+
+    const dev = await srv.getDevById(dev_id);
+
+    if (!dev || !mongoose.isValidObjectId(dev._id))
+      return res.status(404).send(createError(404, "User not found..."));
+
+    const devs = await srv.getDislikedDevs(dev);
 
     const resp = cnv.ToResponses(devs);
 

@@ -45,6 +45,16 @@ export default function createDevService() {
     return resp;
   }
 
+  async function getLikedDevs(dev) {
+    const resp = await db.getLikedDevs(dev);
+    return resp;
+  }
+
+  async function getDislikedDevs(dev) {
+    const resp = await db.getDislikedDevs(dev);
+    return resp;
+  }
+
   async function getDevByUsername(username) {
     verifyUsername(username);
 
@@ -71,6 +81,8 @@ export default function createDevService() {
     login,
     getDevById,
     getDevs,
+    getLikedDevs,
+    getDislikedDevs,
     getDevByUsername,
     createDev,
   };

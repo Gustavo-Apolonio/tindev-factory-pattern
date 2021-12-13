@@ -19,6 +19,32 @@ export default function createDevDatabase() {
     return resp;
   }
 
+  async function getLikedDevs(dev) {
+    const filters = {
+      $and: [
+        { _id: { $ne: dev._id } },
+        { _id: { $nin: dev.dislikes } },
+        { _id: { $in: dev.likes } },
+      ],
+    };
+
+    const resp = await DevModel.find(filters);
+    return resp;
+  }
+
+  async function getDislikedDevs(dev) {
+    const filters = {
+      $and: [
+        { _id: { $ne: dev._id } },
+        { _id: { $nin: dev.likes } },
+        { _id: { $in: dev.dislikes } },
+      ],
+    };
+
+    const resp = await DevModel.find(filters);
+    return resp;
+  }
+
   async function getDevByUsername(username) {
     const resp = await DevModel.findOne({ user: username });
     return resp;
@@ -32,6 +58,8 @@ export default function createDevDatabase() {
   return {
     getDevById,
     getDevs,
+    getLikedDevs,
+    getDislikedDevs,
     getDevByUsername,
     createDev,
   };
