@@ -9,9 +9,27 @@ const Container = styled.div`
 
     border-radius: 5px 5px 0px 0px;
 
-    border-left: 2px solid #df4723;
-    border-top: 2px solid #df4723;
-    border-right: 2px solid #df4723;
+    border-left: 2px solid
+      ${(props) =>
+        props.show === "both"
+          ? "#df4723"
+          : props.show === "liked"
+          ? "#14e29a"
+          : "#fd2c7a"};
+    border-top: 2px solid
+      ${(props) =>
+        props.show === "both"
+          ? "#df4723"
+          : props.show === "liked"
+          ? "#14e29a"
+          : "#fd2c7a"};
+    border-right: 2px solid
+      ${(props) =>
+        props.show === "both"
+          ? "#df4723"
+          : props.show === "liked"
+          ? "#14e29a"
+          : "#fd2c7a"};
   }
 `;
 
@@ -20,7 +38,13 @@ const Footer = styled.footer`
 
   background: #fff;
 
-  border: 2px solid #df4723;
+  border: 2px solid
+    ${(props) =>
+      props.show === "both"
+        ? "#df4723"
+        : props.show === "liked"
+        ? "#14e29a"
+        : "#fd2c7a"};
   border-top: none;
   border-radius: 0px 0px 5px 5px;
 
@@ -32,12 +56,12 @@ const Footer = styled.footer`
     font-size: 16px;
 
     color: #333;
-    color: ${(props) =>
+    /* color: ${(props) =>
       props.show === "both"
         ? "#333"
         : props.show === "liked"
         ? "#14e29a"
-        : "#fd2c7a"};
+        : "#fd2c7a"}; */
   }
 
   p {

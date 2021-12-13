@@ -85,6 +85,22 @@ const Form = styled.div`
       transform: translateY(-1.5px);
     }
   }
+
+  @media (max-width: 540px) {
+    width: 35%;
+  }
+
+  @media (max-width: 415px) {
+    width: 45%;
+  }
+
+  @media (max-width: 375px) {
+    width: 50%;
+  }
+
+  @media (max-width: 280px) {
+    width: 65%;
+  }
 `;
 
 export { Container, Img, Form };

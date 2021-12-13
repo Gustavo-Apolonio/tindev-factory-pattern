@@ -10,6 +10,18 @@ const CardsContainer = styled.div`
   margin-top: calc(10vh - 10px);
   margin-bottom: calc(2.5vh - 10px);
   padding: 5px 15px;
+
+  @media (max-width: 540px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 415px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 280px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 const Empty = styled.div`

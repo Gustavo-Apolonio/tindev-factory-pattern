@@ -75,6 +75,14 @@ const Profile = styled.div`
     z-index: 10000;
 
     width: 18em;
+
+    @media (max-width: 540px) {
+      width: 16em;
+    }
+
+    @media (max-width: 415px) {
+      width: 16em;
+    }
   }
 
   &.active div {
@@ -114,6 +122,10 @@ const Profile = styled.div`
 
     a:nth-child(2):hover {
       color: #58eed7;
+    }
+
+    @media (max-width: 415px) {
+      background-color: rgba(0, 0, 0, 0.9) !important;
     }
   }
 `;
@@ -170,6 +182,15 @@ const Menu = styled.div`
   a:nth-child(4) {
     display: ${(props) => (props.page === "main" ? "none" : "block")};
     font-size: 24px;
+  }
+
+  @media (max-width: 415px) {
+    position: absolute;
+
+    left: -3px;
+
+    height: 90%;
+    width: 15em;
   }
 `;
 

@@ -97,7 +97,7 @@ export default function DevCard(props) {
   };
 
   return (
-    <Container>
+    <Container show={show}>
       <img className="profile" src={dev.avatar} alt={`${dev.name}'s Profile`} />
       <Footer show={show}>
         <strong>{dev.name}</strong>
