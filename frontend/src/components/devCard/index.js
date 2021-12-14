@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import BounceLoader from "react-spinners/BounceLoader";
 
 import createAPI from "../../services/api.js";
 
@@ -20,14 +21,21 @@ export default function DevCard(props) {
 
   const show = props.show;
 
+  const [loading, setLoading] = useState(false);
+
   const handleDislike = async (id) => {
+    if (show !== "both") return false;
+
     try {
+      setLoading(true);
       const resp = await api.dislike(token, id);
 
       devs.setDevs(devs.devs.filter((dev) => dev.id !== id));
 
+      setLoading(false);
       return resp;
     } catch (error) {
+      setLoading(false);
       const err = error.response || {
         data: { code: 0, message: "An occurred, try again later..." },
       };
@@ -59,13 +67,18 @@ export default function DevCard(props) {
   };
 
   const handleLike = async (id) => {
+    if (show !== "both") return false;
+
     try {
+      setLoading(true);
       const resp = await api.like(token, id);
 
       devs.setDevs(devs.devs.filter((dev) => dev.id !== id));
 
+      setLoading(false);
       return resp;
     } catch (error) {
+      setLoading(false);
       const err = error.response || {
         data: { code: 0, message: "An occurred, try again later..." },
       };
@@ -98,8 +111,14 @@ export default function DevCard(props) {
 
   return (
     <Container show={show}>
-      <img className="profile" src={dev.avatar} alt={`${dev.name}'s Profile`} />
-      <Footer show={show}>
+      <img
+        className="profile"
+        src={dev.avatar}
+        alt={`${dev.name}'s Profile`}
+        onDoubleClick={() => handleLike(dev.id)}
+      />
+      <BounceLoader color="#df4723" loading={loading} />
+      <Footer show={show} onDoubleClick={() => handleLike(dev.id)}>
         <strong>{dev.name}</strong>
         <p>{dev.bio}</p>
       </Footer>

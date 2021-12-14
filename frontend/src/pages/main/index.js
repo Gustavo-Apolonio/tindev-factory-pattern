@@ -15,7 +15,9 @@ import Match from "../../components/match";
 
 const api = createAPI();
 
-export default function Main() {
+export default function Main(props) {
+  const ref = props.loadingRef;
+
   const token = sessionStorage.getItem("@tindev/token");
 
   const navigation = useNavigate();
@@ -34,10 +36,13 @@ export default function Main() {
 
   const loadDevs = useCallback(async () => {
     try {
+      ref.current.continuousStart();
       const resp = await api.devs(token);
 
       setDevs([...resp]);
+      ref.current.complete();
     } catch (error) {
+      ref.current.complete();
       const err = error.response || {
         data: { code: 0, message: "An occurred, try again later..." },
       };
@@ -62,7 +67,7 @@ export default function Main() {
           break;
       }
     }
-  }, [token, navigation]);
+  }, [token, ref, navigation]);
 
   useEffect(() => {
     loadDevs();
@@ -82,11 +87,17 @@ export default function Main() {
     });
   }, [devId, devs]);
 
-  return (
+  return match ? (
+    <div>
+      {window.scrollTo(0, 0)}
+      <Header dev={dev} page="main" />
+      <Match devMatched={match} setMatch={setMatch} />
+    </div>
+  ) : (
     <div>
       <Header dev={dev} page="main" />
       {devs.length > 0 ? (
-        <CardsContainer>
+        <CardsContainer className="cards">
           {devs.map((dev) => (
             <DevCard
               key={dev.id}
@@ -100,8 +111,6 @@ export default function Main() {
       ) : (
         <Empty>You've cleaned tindev...</Empty>
       )}
-
-      {match && <Match devMatched={match} setMatch={setMatch} />}
     </div>
   );
 }

@@ -16,6 +16,8 @@ const Container = styled.div`
 
   top: 0;
 
+  z-index: 1000;
+
   .myBtn {
     height: 100%;
 

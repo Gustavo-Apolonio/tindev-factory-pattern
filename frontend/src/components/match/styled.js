@@ -13,6 +13,8 @@ const Container = styled.div`
   right: 0;
   bottom: 0;
 
+  z-index: 1000;
+
   background-color: rgba(0, 0, 0, 0.8);
 
   strong {

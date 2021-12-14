@@ -4,6 +4,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 
+  position: relative;
+
+  span {
+    position: absolute;
+
+    left: calc(50% - 30px);
+    top: calc(50% - 60px);
+  }
+
   img.profile {
     max-width: 100%;
 

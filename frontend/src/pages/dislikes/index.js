@@ -13,7 +13,9 @@ import createAPI from "../../services/api.js";
 
 const api = createAPI();
 
-export default function Disliked() {
+export default function Disliked(props) {
+  const ref = props.loadingRef;
+
   const token = sessionStorage.getItem("@tindev/token");
 
   const navigation = useNavigate();
@@ -31,10 +33,13 @@ export default function Disliked() {
 
   const loadDevs = useCallback(async () => {
     try {
+      ref.current.continuousStart();
       const resp = await api.disliked(token);
 
       setDevs([...resp]);
+      ref.current.complete();
     } catch (error) {
+      ref.current.complete();
       const err = error.response || {
         data: { code: 0, message: "An occurred, try again later..." },
       };
@@ -59,7 +64,7 @@ export default function Disliked() {
           break;
       }
     }
-  }, [navigation, token]);
+  }, [token, ref, navigation]);
 
   useEffect(() => {
     loadDevs();
