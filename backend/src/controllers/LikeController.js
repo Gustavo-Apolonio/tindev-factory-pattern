@@ -58,6 +58,33 @@ router.post("/like/:targetId", auth, async (req, res) => {
   }
 });
 
+router.put("/like/remove/:targetId", auth, async (req, res) => {
+  try {
+    const loggedId = req.dev_id || "";
+    const targetId = req.params.targetId || "";
+
+    const loggedDev = await devSrv.getDevById(loggedId);
+
+    if (!loggedDev || !mongoose.isValidObjectId(loggedDev._id))
+      return res.status(404).send(createError(404, "User not found"));
+
+    const targetDev = await devSrv.getDevById(targetId);
+
+    if (!targetDev || !mongoose.isValidObjectId(targetDev._id))
+      return res
+        .status(404)
+        .send(createError(404, "Selected user doesn't exist"));
+
+    await srv.unlikeDev(loggedDev, targetDev);
+
+    const resp = cnv.ToResponse(loggedDev);
+
+    return res.status(200).send(resp);
+  } catch (error) {
+    return res.status(400).send(createError(400, error));
+  }
+});
+
 router.post("/dislike/:targetId", auth, async (req, res) => {
   try {
     const loggedId = req.dev_id || "";
@@ -80,6 +107,33 @@ router.post("/dislike/:targetId", auth, async (req, res) => {
     const loggedResp = cnv.ToResponse(loggedDev);
 
     return res.status(200).send(loggedResp);
+  } catch (error) {
+    return res.status(400).send(createError(400, error));
+  }
+});
+
+router.put("/dislike/remove/:targetId", auth, async (req, res) => {
+  try {
+    const loggedId = req.dev_id || "";
+    const targetId = req.params.targetId || "";
+
+    const loggedDev = await devSrv.getDevById(loggedId);
+
+    if (!loggedDev || !mongoose.isValidObjectId(loggedDev._id))
+      return res.status(404).send(createError(404, "User not found"));
+
+    const targetDev = await devSrv.getDevById(targetId);
+
+    if (!targetDev || !mongoose.isValidObjectId(targetDev._id))
+      return res
+        .status(404)
+        .send(createError(404, "Selected user doesn't exist"));
+
+    await srv.undislikeDev(loggedDev, targetDev);
+
+    const resp = cnv.ToResponse(loggedDev);
+
+    return res.status(200).send(resp);
   } catch (error) {
     return res.status(400).send(createError(400, error));
   }
