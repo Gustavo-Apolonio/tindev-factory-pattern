@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import createDevService from "../services/DevService.js";
 import createDevUtils from "../utils/DevUtils.js";
 import createGitHubAccess from "../utils/GitHubAccess.js";
+import createImageStorage from "../utils/ImageStorage.js";
 
 import createError from "../models/res/ErrorRes.js";
 
@@ -18,6 +19,34 @@ const srv = createDevService();
 const cnv = createDevUtils();
 
 const git = createGitHubAccess();
+const img = createImageStorage();
+
+import multer from "multer";
+import bcrypt from "bcrypt";
+
+import path from "path";
+import fs from "fs";
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/profiles/images/");
+  },
+  filename: function (req, file, cb) {
+    console.log(file)
+    
+    const name = path.parse(file.originalname).name;
+    const ext = path.parse(file.originalname).ext;
+    const cryptname = bcrypt
+      .hashSync(name, 0)
+      .replaceAll("/", "")
+      .replaceAll(".", "");
+    const fileName = cryptname + ext;
+
+    cb(null, fileName);
+  },
+});
+
+const parser = multer({ storage: storage });
 
 async function login(req, res) {
   try {
@@ -170,5 +199,41 @@ router.get("/disliked", auth, async (req, res) => {
     return res.status(400).send(createError(400, error));
   }
 });
+
+router.put('/profile', auth, async (req, res) => {
+  try {
+    await img.updateImage(req, res)
+    
+    // await img.updateImage(req, res)
+    
+    // setTimeout(() => { 
+    //   img.deleteImage(req.body.avatar.path)
+    // }, 5000)
+    
+    
+    // parser.any(["name", "bio", "password", "avatar"])(req, res, (err) => {
+    //   console.log("any");
+    //   console.log(req.body);
+    //   if (err) console.log(err);
+    //   else {
+    //     console.log(req);
+    //   }
+    // });
+
+    // parser.array("avatar", 1)(req, res, (err) => {
+    //   console.log("array");
+    //   console.log(req.body);
+    //   if (err) console.log(err);
+    //   else {
+    //     console.log(req.file);
+    //   }
+    // });
+
+    
+    return res.status(200).send(req.body.avatar.path);
+  } catch (error) {
+    return res.status(400).send(createError(400, error))
+  }
+})
 
 export default router;

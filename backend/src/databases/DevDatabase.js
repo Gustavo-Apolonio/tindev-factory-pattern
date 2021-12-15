@@ -55,6 +55,24 @@ export default function createDevDatabase() {
     return resp;
   }
 
+  async function updateDev(dev, fields) {
+    const { name, password, bio, avatar } = fields;
+
+    const resp = await DevModel.findOneAndUpdate(
+      { _id: dev._id },
+      {
+        name,
+        password,
+        bio,
+        avatar,
+      }
+    );
+
+    dev = await DevModel.findById(dev._id);
+
+    return dev;
+  }
+
   return {
     getDevById,
     getDevs,
@@ -62,5 +80,6 @@ export default function createDevDatabase() {
     getDislikedDevs,
     getDevByUsername,
     createDev,
+    updateDev,
   };
 }

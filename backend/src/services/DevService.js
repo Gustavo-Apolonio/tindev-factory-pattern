@@ -77,6 +77,13 @@ export default function createDevService() {
     return dev;
   }
 
+  async function updateDev(dev, fields) {
+    verifyDev(fields);
+
+    dev = await db.updateDev(dev, fields);
+    return dev;
+  }
+
   return {
     login,
     getDevById,
@@ -85,5 +92,6 @@ export default function createDevService() {
     getDislikedDevs,
     getDevByUsername,
     createDev,
+    updateDev,
   };
 }
