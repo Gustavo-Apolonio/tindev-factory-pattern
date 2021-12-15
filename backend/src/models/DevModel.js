@@ -2,6 +2,14 @@ import mongoose from "mongoose";
 
 const devSchema = mongoose.Schema(
   {
+    git_id: {
+      type: String,
+      required: true,
+    },
+    git_user_exists: {
+      type: Boolean,
+      required: true,
+    },
     name: {
       type: String,
       required: true,

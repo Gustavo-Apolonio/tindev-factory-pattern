@@ -21,127 +21,124 @@ const cnv = createDevUtils();
 const git = createGitHubAccess();
 const img = createImageStorage();
 
-import multer from "multer";
-import bcrypt from "bcrypt";
-
-import path from "path";
-import fs from "fs";
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/profiles/images/");
-  },
-  filename: function (req, file, cb) {
-    console.log(file)
-    
-    const name = path.parse(file.originalname).name;
-    const ext = path.parse(file.originalname).ext;
-    const cryptname = bcrypt
-      .hashSync(name, 0)
-      .replaceAll("/", "")
-      .replaceAll(".", "");
-    const fileName = cryptname + ext;
-
-    cb(null, fileName);
-  },
-});
-
-const parser = multer({ storage: storage });
-
 async function login(req, res) {
-  try {
-    const username = req.body.username || "";
-    const password = req.body.password || "";
+  let dev = req.dev;
 
-    const dev = await srv.login(username, password);
+  const password = req.body.password || "";
 
-    const token = jwt.sign({ dev_id: dev._id }, process.env.TOKEN);
+  dev = await srv.login(dev.user, password);
 
-    const devResp = cnv.ToResponse(dev);
+  const token = jwt.sign({ dev_id: dev._id }, process.env.TOKEN);
 
-    const resp = {
-      token,
-      dev: devResp,
-    };
+  const devResp = cnv.ToProfileResponse(dev);
 
-    return res.status(200).send(resp);
-  } catch (error) {
-    return res.status(400).send(createError(400, error));
-  }
+  const resp = {
+    token,
+    dev: devResp,
+  };
+
+  return resp;
 }
 
 async function createUser(req, res) {
-  try {
-    const username = req.body.username || "";
+  const git_id = req.body.git_id || "";
+  const git_user_exists = req.body.git_user_exists || false;
+  const name = req.body.name || "";
+  const user = req.body.username || "";
+  const password = req.body.password || "";
+  const bio = req.body.bio || "";
+  const avatar = req.body.avatar || "";
 
-    const gitInfo = await git.getUser(username);
+  const tableDev = await cnv.ToTable(
+    git_id,
+    git_user_exists,
+    name,
+    user,
+    password,
+    bio,
+    avatar
+  );
 
-    if (!gitInfo)
-      return res
-        .status(404)
-        .send(createError(404, "Git Hub User not found..."));
+  const dev = await srv.createDev(tableDev);
 
-    req.body.username = gitInfo.user;
+  if (!dev || !mongoose.isValidObjectId(dev._id))
+    return res
+      .status(500)
+      .send(
+        createError(
+          500,
+          "It wasn't possible to create an user... Please, try again later!"
+        )
+      );
 
-    const user = await srv.getDevByUsername(gitInfo.user);
+  Object.keys(req.connectedDevs).map((connectedDev) => {
+    const devSocket = req.connectedDevs[connectedDev];
 
-    if (user) {
-      return login(req, res);
-    }
-
-    const password = req.body.password || "";
-
-    const tableDev = await cnv.ToTable(
-      gitInfo.name,
-      gitInfo.user,
-      password,
-      gitInfo.bio,
-      gitInfo.avatar
-    );
-
-    const dev = await srv.createDev(tableDev);
-
-    if (!dev || !mongoose.isValidObjectId(dev._id))
-      return res
-        .status(500)
-        .send(
-          createError(
-            500,
-            "It wasn't possible to create an user... Please, try again later!"
-          )
-        );
-
-    Object.keys(req.connectedDevs).map((connectedDev) => {
-      const devSocket = req.connectedDevs[connectedDev];
-
+    if (devSocket) {
       const io = req.io;
 
       const newDev = cnv.ToResponse(dev);
 
       io.to(devSocket).emit("newDev", { dev: newDev });
-    });
+    }
+  });
 
-    return login(req, res);
-  } catch (error) {
-    return res.status(400).send(createError(400, error));
-  }
+  req.dev = dev;
+}
+
+async function updateUser(req, res) {
+  let dev = req.dev;
+  const username = req.body.username || "";
+
+  dev = await srv.setDevUsername(dev, username);
+
+  req.dev = dev;
 }
 
 router.post("/app", async (req, res) => {
   try {
     const username = req.body.username || "";
 
-    const user = await srv.getDevByUsername(username);
+    let user = await srv.getDevByUsername(username);
 
-    if (!user || !mongoose.isValidObjectId(user._id))
-      return createUser(req, res);
-    else {
-      return login(req, res);
-    }
+    if (!user || !mongoose.isValidObjectId(user._id)) {
+      const gitInfo = await git.getUser(username);
+
+      if (!gitInfo)
+        return res
+          .status(404)
+          .send(createError(404, "Git Hub User not found..."));
+
+      user = await srv.getDevByGitId(gitInfo.git_id);
+
+      if (!user || !mongoose.isValidObjectId(user._id)) {
+        req.body.name = gitInfo.name;
+        req.body.username = gitInfo.user;
+        req.body.git_id = gitInfo.git_id;
+        req.body.git_user_exists = true;
+        req.body.bio = gitInfo.bio;
+        req.body.avatar = gitInfo.avatar;
+
+        await createUser(req, res);
+      } else {
+        req.dev = user;
+
+        if (user.user.toLowerCase() !== gitInfo.user.toLowerCase()) {
+          req.body.username = gitInfo.user;
+          await updateUser(req, res);
+        }
+      }
+    } else req.dev = user;
+
+    const resp = await login(req, res);
+
+    return res.status(200).send(resp);
   } catch (error) {
     return res.status(400).send(createError(400, error));
   }
 });
+
+// refactoring
 
 router.get("/", auth, async (req, res) => {
   try {
@@ -200,17 +197,16 @@ router.get("/disliked", auth, async (req, res) => {
   }
 });
 
-router.put('/profile', auth, async (req, res) => {
+router.put("/profile", auth, async (req, res) => {
   try {
-    await img.updateImage(req, res)
-    
+    await img.updateImage(req, res);
+
     // await img.updateImage(req, res)
-    
-    // setTimeout(() => { 
+
+    // setTimeout(() => {
     //   img.deleteImage(req.body.avatar.path)
     // }, 5000)
-    
-    
+
     // parser.any(["name", "bio", "password", "avatar"])(req, res, (err) => {
     //   console.log("any");
     //   console.log(req.body);
@@ -229,11 +225,10 @@ router.put('/profile', auth, async (req, res) => {
     //   }
     // });
 
-    
     return res.status(200).send(req.body.avatar.path);
   } catch (error) {
-    return res.status(400).send(createError(400, error))
+    return res.status(400).send(createError(400, error));
   }
-})
+});
 
 export default router;

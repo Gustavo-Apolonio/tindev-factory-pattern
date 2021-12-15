@@ -1,20 +1,15 @@
 import axios from "axios";
 
 export default function createGitHubAccess() {
-  function verifyUsername(username) {
-    if (username === "") throw "Please, insert an username...";
-  }
-
   async function getUser(username) {
-    verifyUsername(username);
-
     try {
       const userInfo = await (
         await axios.get(`https://api.github.com/users/${username}`)
       ).data;
-      const { name, login: user, bio, avatar_url: avatar } = userInfo;
+      const { name, login: user, id, bio, avatar_url: avatar } = userInfo;
 
       const resp = {
+        git_id: id.toString(),
         name: name || user,
         user,
         bio,
