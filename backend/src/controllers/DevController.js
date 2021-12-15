@@ -195,37 +195,50 @@ router.get("/disliked", auth, async (req, res) => {
   }
 });
 
-// refactoring
-
 router.put("/profile", auth, async (req, res) => {
   try {
+    const dev_id = req.dev_id || "";
+
+    let dev = await srv.getDevById(dev_id);
+
+    if (!dev || !mongoose.isValidObjectId(dev._id))
+      return res.status(404).send(createError(404, "User not found..."));
+
+    const name = req.body.name || "";
+    let password = req.body.password || "";
+    password = await cnv.encryptPassword(password);
+    const bio = req.body.bio || null;
+
+    const infos = { name, password, bio };
+
+    dev = await srv.updateDev(dev, infos);
+
+    const resp = cnv.ToProfileResponse(dev);
+
+    return res.status(200).send(resp);
+  } catch (error) {
+    return res.status(400).send(createError(400, error));
+  }
+});
+
+router.put("/profile/avatar", auth, async (req, res) => {
+  try {
+    const dev_id = req.dev_id || "";
+
+    let dev = await srv.getDevById(dev_id);
+
+    if (!dev || !mongoose.isValidObjectId(dev._id))
+      return res.status(404).send(createError(404, "User not found..."));
+
     await img.updateImage(req, res);
 
-    // await img.updateImage(req, res)
+    const { path: avatar } = req.body.avatar;
 
-    // setTimeout(() => {
-    //   img.deleteImage(req.body.avatar.path)
-    // }, 5000)
+    dev = await srv.updateAvatar(dev, avatar);
 
-    // parser.any(["name", "bio", "password", "avatar"])(req, res, (err) => {
-    //   console.log("any");
-    //   console.log(req.body);
-    //   if (err) console.log(err);
-    //   else {
-    //     console.log(req);
-    //   }
-    // });
+    const resp = cnv.ToProfileResponse(dev);
 
-    // parser.array("avatar", 1)(req, res, (err) => {
-    //   console.log("array");
-    //   console.log(req.body);
-    //   if (err) console.log(err);
-    //   else {
-    //     console.log(req.file);
-    //   }
-    // });
-
-    return res.status(200).send(req.body.avatar.path);
+    return res.status(200).send(resp);
   } catch (error) {
     return res.status(400).send(createError(400, error));
   }

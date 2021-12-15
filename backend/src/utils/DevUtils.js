@@ -56,6 +56,7 @@ export default function createDevUtils() {
   }
 
   return {
+    encryptPassword,
     ToTable,
     ToProfileResponse,
     ToResponses,

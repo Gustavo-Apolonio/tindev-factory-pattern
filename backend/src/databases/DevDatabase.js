@@ -68,24 +68,38 @@ export default function createDevDatabase() {
     return resp;
   }
 
-  // refactoring
-
-  async function updateDev(dev, fields) {
-    const { name, password, bio, avatar } = fields;
+  async function updateDev(dev, infos) {
+    const { name, password, bio } = infos;
 
     await DevModel.findOneAndUpdate(
-      { _id: dev._id },
+      {
+        _id: dev._id,
+      },
       {
         name,
         password,
         bio,
+      }
+    );
+
+    const resp = await getDevById(dev._id);
+
+    return resp;
+  }
+
+  async function updateAvatar(dev, avatar) {
+    await DevModel.findOneAndUpdate(
+      {
+        _id: dev._id,
+      },
+      {
         avatar,
       }
     );
 
-    dev = await DevModel.findById(dev._id);
+    const resp = await getDevById(dev._id);
 
-    return dev;
+    return resp;
   }
 
   return {
@@ -97,7 +111,7 @@ export default function createDevDatabase() {
     getDevs,
     getLikedDevs,
     getDislikedDevs,
-
     updateDev,
+    updateAvatar,
   };
 }

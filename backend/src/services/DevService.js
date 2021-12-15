@@ -95,12 +95,22 @@ export default function createDevService() {
     return resp;
   }
 
-  // refactoring
+  async function updateDev(dev, infos) {
+    const { name, password } = infos;
 
-  async function updateDev(dev, fields) {
-    verifyDev(fields);
+    if (name === "") throw "Please, insert a new name...";
+    if (password == "") throw "Please, insert a new password...";
 
-    dev = await db.updateDev(dev, fields);
+    dev = await db.updateDev(dev, infos);
+
+    return dev;
+  }
+
+  async function updateAvatar(dev, avatar) {
+    if (avatar === "") throw "It wasn't possible to update your avatar...";
+
+    dev = db.updateAvatar(dev, avatar);
+
     return dev;
   }
 
@@ -114,7 +124,7 @@ export default function createDevService() {
     getDevs,
     getLikedDevs,
     getDislikedDevs,
-
     updateDev,
+    updateAvatar,
   };
 }
