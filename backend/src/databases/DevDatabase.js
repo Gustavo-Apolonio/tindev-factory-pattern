@@ -29,8 +29,6 @@ export default function createDevDatabase() {
     return dev;
   }
 
-  // refactoring
-
   async function getDevs(dev) {
     const filters = {
       $and: [
@@ -70,6 +68,8 @@ export default function createDevDatabase() {
     return resp;
   }
 
+  // refactoring
+
   async function updateDev(dev, fields) {
     const { name, password, bio, avatar } = fields;
 
@@ -94,10 +94,10 @@ export default function createDevDatabase() {
     createDev,
     setDevUsername,
     getDevById,
-
     getDevs,
     getLikedDevs,
     getDislikedDevs,
+
     updateDev,
   };
 }

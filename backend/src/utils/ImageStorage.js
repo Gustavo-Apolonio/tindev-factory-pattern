@@ -47,7 +47,7 @@ export default function createImageStorage() {
   }
 
   function deleteImage(req, path) {
-    req.body.last_avatar = req.body.avatar.path
+    req.body.last_avatar = req.body.avatar.path;
     fs.unlinkSync(path);
   }
 

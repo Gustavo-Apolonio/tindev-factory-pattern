@@ -46,6 +46,29 @@ export default function createDevService() {
     return resp;
   }
 
+  async function setDevUsername(dev, username) {
+    verifyDev(dev);
+
+    const resp = await db.setDevUsername(dev, username);
+    return resp;
+  }
+
+  async function verifyPassword(password, devPassword) {
+    if (password === "") throw "Please, insert your password...";
+
+    const passwordMatch = await bcrypt.compare(password, devPassword);
+
+    if (!passwordMatch) throw "Incorrect password...";
+  }
+
+  async function login(username, password) {
+    const dev = await getDevByUsername(username);
+
+    await verifyPassword(password, dev.password);
+
+    return dev;
+  }
+
   function verifyId(id) {
     if (!mongoose.isValidObjectId(id)) throw "Invalid or missing id...";
   }
@@ -55,23 +78,6 @@ export default function createDevService() {
 
     const resp = await db.getDevById(id);
     return resp;
-  }
-
-  async function setDevUsername(dev, username) {
-    verifyDev(dev);
-
-    const resp = await db.setDevUsername(dev, username);
-    return resp;
-  }
-
-  // refactoring
-
-  async function verifyPassword(password, devPassword) {
-    if (password === "") throw "Please, insert your password...";
-
-    const passwordMatch = await bcrypt.compare(password, devPassword);
-
-    if (!passwordMatch) throw "Incorrect password...";
   }
 
   async function getDevs(dev) {
@@ -89,13 +95,7 @@ export default function createDevService() {
     return resp;
   }
 
-  async function login(username, password) {
-    const dev = await getDevByUsername(username);
-
-    await verifyPassword(password, dev.password);
-
-    return dev;
-  }
+  // refactoring
 
   async function updateDev(dev, fields) {
     verifyDev(fields);
@@ -109,12 +109,12 @@ export default function createDevService() {
     getDevByGitId,
     createDev,
     setDevUsername,
-    getDevById,
     login,
-
+    getDevById,
     getDevs,
     getLikedDevs,
     getDislikedDevs,
+
     updateDev,
   };
 }

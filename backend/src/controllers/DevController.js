@@ -138,8 +138,6 @@ router.post("/app", async (req, res) => {
   }
 });
 
-// refactoring
-
 router.get("/", auth, async (req, res) => {
   try {
     const dev_id = req.dev_id || "";
@@ -196,6 +194,8 @@ router.get("/disliked", auth, async (req, res) => {
     return res.status(400).send(createError(400, error));
   }
 });
+
+// refactoring
 
 router.put("/profile", auth, async (req, res) => {
   try {

@@ -46,8 +46,6 @@ export default function createDevUtils() {
     );
   }
 
-  // refactoring
-
   function ToResponse(dev) {
     return createDevRes(dev._id, dev.name, dev.bio, dev.avatar);
   }
@@ -60,8 +58,7 @@ export default function createDevUtils() {
   return {
     ToTable,
     ToProfileResponse,
-
-    ToResponse,
     ToResponses,
+    ToResponse,
   };
 }
