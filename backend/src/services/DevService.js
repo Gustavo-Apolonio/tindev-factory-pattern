@@ -96,10 +96,14 @@ export default function createDevService() {
   }
 
   async function updateDev(dev, infos) {
-    const { name, password } = infos;
+    const { name, password, bio } = infos;
 
     if (name === "") throw "Please, insert a new name...";
     if (password == "") throw "Please, insert a new password...";
+    if (bio === "") bio = null;
+    if (bio)
+      if (bio.length > 160)
+        throw "Please, respect the limit of 160 characters...";
 
     dev = await db.updateDev(dev, infos);
 
