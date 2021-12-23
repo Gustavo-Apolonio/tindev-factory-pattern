@@ -15,17 +15,6 @@ export default function createAPI() {
     return resp.data;
   }
 
-  async function dislike(token, targetId) {
-    const resp = await api.post(
-      `/dislike/${targetId}`,
-      {},
-      {
-        headers: { "x-access-token": token },
-      }
-    );
-    return resp.data;
-  }
-
   async function like(token, targetId) {
     const resp = await api.post(
       `/like/${targetId}`,
@@ -37,10 +26,39 @@ export default function createAPI() {
     return resp.data;
   }
 
+  async function unlike(token, targetId) {
+    const resp = await api.put(
+      `/like/remove/${targetId}`,
+      {},
+      { headers: { "x-access-token": token } }
+    );
+    return resp.data;
+  }
+
   async function liked(token) {
     const resp = await api.get("/liked", {
       headers: { "x-access-token": token },
     });
+    return resp.data;
+  }
+
+  async function dislike(token, targetId) {
+    const resp = await api.post(
+      `/dislike/${targetId}`,
+      {},
+      {
+        headers: { "x-access-token": token },
+      }
+    );
+    return resp.data;
+  }
+
+  async function undislike(token, targetId) {
+    const resp = await api.put(
+      `/dislike/remove/${targetId}`,
+      {},
+      { headers: { "x-access-token": token } }
+    );
     return resp.data;
   }
 
@@ -54,9 +72,11 @@ export default function createAPI() {
   return {
     enter,
     devs,
-    dislike,
     like,
+    unlike,
     liked,
+    dislike,
+    undislike,
     disliked,
   };
 }

@@ -70,6 +70,52 @@ export default function Liked(props) {
     loadDevs();
   }, [token, loadDevs]);
 
+  const handleUnlike = async (id, loading) => {
+    try {
+      loading(true);
+
+      const resp = await api.unlike(token, id);
+
+      setDevs(devs.filter((dev) => dev.id !== id));
+
+      loading(false);
+
+      toast.success("User returned to Tindev List!");
+
+      return resp;
+    } catch (error) {
+      loading(false);
+
+      const err = error.response || {
+        data: { code: 0, message: "An occurred, try again later..." },
+      };
+
+      const code = err.data.code || 0;
+      const message = err.data.message;
+
+      switch (code) {
+        case 401:
+          toast.warn(message);
+          toast.info("Logging you out...");
+
+          sessionStorage.clear();
+
+          navigation("/");
+          break;
+
+        case 400:
+          toast.warn(message);
+          break;
+
+        default:
+          toast.error(message, {
+            theme: "dark",
+          });
+          break;
+      }
+    }
+  };
+
   return (
     <div>
       <Header dev={dev} page="liked" />
@@ -82,7 +128,17 @@ export default function Liked(props) {
               dev={dev}
               devs={{ devs, setDevs }}
               token={token}
-              show="liked"
+              show={{
+                buttons: "liked",
+                like: {
+                  show: false,
+                  fn: null,
+                },
+                dislike: {
+                  show: true,
+                  fn: handleUnlike,
+                },
+              }}
             />
           ))}
         </CardsContainer>

@@ -21,10 +21,14 @@ export default function DevCard(props) {
 
   const show = props.show;
 
+  const display = show.buttons;
+  const like = show.like;
+  const dislike = show.dislike;
+
   const [loading, setLoading] = useState(false);
 
-  const handleDislike = async (id) => {
-    if (show !== "both") return false;
+  const dislikeFn = async (id) => {
+    if (display !== "both") return false;
 
     try {
       setLoading(true);
@@ -66,8 +70,8 @@ export default function DevCard(props) {
     }
   };
 
-  const handleLike = async (id) => {
-    if (show !== "both") return false;
+  const likeFn = async (id) => {
+    if (display !== "both") return false;
 
     try {
       setLoading(true);
@@ -109,25 +113,41 @@ export default function DevCard(props) {
     }
   };
 
+  const handleLike = like.fn ?? likeFn;
+  const handleDislike = dislike.fn ?? dislikeFn;
+
   return (
-    <Container show={show}>
+    <Container show={display}>
       <img
         className="profile"
         src={dev.avatar}
         alt={`${dev.name}'s Profile`}
-        onDoubleClick={() => handleLike(dev.id)}
+        onDoubleClick={() => handleLike(dev.id, setLoading)}
       />
       <BounceLoader color="#df4723" loading={loading} />
-      <Footer show={show} onDoubleClick={() => handleLike(dev.id)}>
+      <Footer
+        show={display}
+        onDoubleClick={() => handleLike(dev.id, setLoading)}
+      >
         <strong>{dev.name}</strong>
         <p>{dev.bio}</p>
       </Footer>
 
-      <Buttons show={show}>
-        <Button dislike type="button" onClick={() => handleDislike(dev.id)}>
+      <Buttons show={display}>
+        <Button
+          dislike
+          type="button"
+          onClick={() => handleDislike(dev.id, setLoading)}
+          show={dislike.show}
+        >
           <Dislike />
         </Button>
-        <Button like type="button" onClick={() => handleLike(dev.id)}>
+        <Button
+          like
+          type="button"
+          onClick={() => handleLike(dev.id, setLoading)}
+          show={like.show}
+        >
           <Like />
         </Button>
       </Buttons>

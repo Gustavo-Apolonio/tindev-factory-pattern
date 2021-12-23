@@ -104,7 +104,17 @@ export default function Main(props) {
               dev={dev}
               devs={{ devs, setDevs }}
               token={token}
-              show="both"
+              show={{
+                buttons: "both",
+                like: {
+                  show: true,
+                  fn: null,
+                },
+                dislike: {
+                  show: true,
+                  fn: null,
+                },
+              }}
             />
           ))}
         </CardsContainer>
