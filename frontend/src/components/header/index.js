@@ -1,7 +1,13 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Container, Profile, Menu } from "./styled.js";
+import {
+  Container,
+  Profile,
+  Menu,
+  ProfileArea,
+  DevsMenuArea,
+} from "./styled.js";
 
 import logo from "../../assets/images/logo.svg";
 import {
@@ -34,15 +40,24 @@ export default function Header(props) {
     menu.classList.toggle("active");
   };
 
+  const profile = () => {
+    navigation(`/tindev/${firstName}`, { state: { dev } });
+  };
+
   const page = props.page;
 
   return (
     <Container>
       <Profile id="menu">
-        <img className="profile" src={avatar} alt="Profile" />
-        <button className="myBtn toggle" onClick={toggleActive}></button>
-        <h2>{firstName}</h2> &nbsp; | &nbsp; <img src={logo} alt="TINDEV" />
-        <Menu page={page}>
+        <ProfileArea onClick={profile} className="profileArea">
+          <img className="profile" src={avatar} alt="Profile" />
+          <h2>{firstName}</h2>
+        </ProfileArea>
+        <h3>|</h3>
+        <DevsMenuArea onClick={toggleActive}>
+          <img src={logo} alt="TINDEV" />
+        </DevsMenuArea>
+        <Menu className="devsMenu" page={page}>
           <button onClick={toggleActive} className="myBtn closeToggle">
             <Close />
           </button>

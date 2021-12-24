@@ -2,14 +2,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import Header from "../../components/header";
-import DevCard from "../../components/devCard";
-
-import avatar from "../../assets/images/defaultUser.svg";
+import createAPI from "../../services/api.js";
 
 import { CardsContainer, Empty } from "../main/styled.js";
 
-import createAPI from "../../services/api.js";
+import avatar from "../../assets/images/defaultUser.svg";
+
+import Header from "../../components/header";
+import DevCard from "../../components/devCard";
 
 const api = createAPI();
 

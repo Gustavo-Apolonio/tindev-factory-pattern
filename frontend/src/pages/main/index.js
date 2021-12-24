@@ -25,7 +25,10 @@ export default function Main(props) {
   const state = location.state;
   const dev = state.dev || {
     id: 0,
+    git_exists: true,
     name: "Developer FullStack",
+    user: "FullStack-Dev",
+    password: "000",
     bio: null,
     avatar,
   };

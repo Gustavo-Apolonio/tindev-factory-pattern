@@ -62,32 +62,11 @@ const Profile = styled.div`
   display: flex;
   align-items: center;
 
-  img.profile {
-    margin-right: 5px;
-
-    height: 100%;
-
-    border-radius: 100%;
-    border: 1.5px solid #df4723;
+  h3 {
+    margin: 0px 5px;
   }
 
-  .toggle {
-    position: absolute;
-
-    z-index: 10000;
-
-    width: 18em;
-
-    @media (max-width: 540px) {
-      width: 16em;
-    }
-
-    @media (max-width: 415px) {
-      width: 16em;
-    }
-  }
-
-  &.active div {
+  &.active div.devsMenu {
     z-index: 10000;
 
     button.closeToggle {
@@ -132,6 +111,28 @@ const Profile = styled.div`
   }
 `;
 
+const ProfileArea = styled.div`
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+
+  img.profile {
+    margin-right: 5px;
+
+    height: 100%;
+
+    border-radius: 100%;
+    border: 1.5px solid #df4723;
+  }
+`;
+
+const DevsMenuArea = styled.div`
+  cursor: pointer;
+`;
+
 const Menu = styled.div`
   user-select: none;
 
@@ -139,7 +140,7 @@ const Menu = styled.div`
   align-items: center;
   justify-content: space-evenly;
 
-  width: 12em;
+  width: ${(props) => (props.page === "profile" ? "14em" : "12em")};
 
   margin-left: 5px;
 
@@ -196,4 +197,4 @@ const Menu = styled.div`
   }
 `;
 
-export { Container, Profile, Menu };
+export { Container, Profile, ProfileArea, DevsMenuArea, Menu };
