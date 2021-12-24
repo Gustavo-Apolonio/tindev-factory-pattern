@@ -24,6 +24,7 @@ function startServer() {
 
   Next(app, io, connectedDevs);
   Routes(express, app);
+  app.use(express.static("public"));
 
   const port = process.env.PORT || 5001;
   server.listen(port, () => {
