@@ -3,6 +3,10 @@ import styled from "styled-components";
 const Container = styled.div`
   width: 48%;
   height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const ImgContainer = styled.div`
@@ -11,12 +15,13 @@ const ImgContainer = styled.div`
   align-items: center;
   justify-content: center;
 
-  width: 50%;
+  width: 100%;
+  height: 75%;
 `;
 
 const ImagePreview = styled.div`
-  height: 23em;
-  width: 23em;
+  height: 30em;
+  width: 30em;
 
   display: flex;
   align-items: flex-end;
@@ -37,7 +42,7 @@ const ImagePreview = styled.div`
   label {
     cursor: pointer;
 
-    width: 100%;
+    width: 75%;
     height: 15%;
 
     background-color: #df4723;
@@ -59,7 +64,7 @@ const ImagePreview = styled.div`
 `;
 
 const SaveButtons = styled.div`
-  width: 95%;
+  width: 65%;
 
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -103,4 +108,29 @@ const Button = styled.div`
   }
 `;
 
-export { Container, ImgContainer, ImagePreview, SaveButtons, Button };
+const CommingSoon = styled.div`
+  width: 100%;
+  height: 25%;
+
+  border: 2px solid #962f17;
+  border-radius: 15px;
+
+  background-color: #df4723;
+
+  color: #fff;
+
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+export {
+  Container,
+  ImgContainer,
+  ImagePreview,
+  SaveButtons,
+  Button,
+  CommingSoon,
+};

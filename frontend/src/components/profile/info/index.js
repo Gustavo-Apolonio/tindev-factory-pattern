@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
+
+import { Container } from "./styled";
 
 export default function InfoSide() {
-    return (
-      <div>
-        <sub>dev's info</sub>
-      </div>
-    );
+  return <Container></Container>;
 }

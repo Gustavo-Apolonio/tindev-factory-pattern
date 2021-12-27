@@ -1,9 +1,7 @@
 import React from "react";
 
+import { Container } from "./styled";
+
 export default function Div() {
-  return (
-    <div>
-      <sub>a div</sub>
-    </div>
-  );
+  return <Container />;
 }

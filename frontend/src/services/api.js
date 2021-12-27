@@ -69,6 +69,20 @@ export default function createAPI() {
     return resp.data;
   }
 
+  async function updateProfilePic(token, avatar, last_avatar) {
+    const formData = new FormData();
+    formData.append("avatar", avatar);
+    formData.append("last_avatar", last_avatar);
+
+    const resp = await api.put("/profile/avatar", formData, {
+      headers: {
+        "x-access-token": token,
+        "content-type": "multipart/form-data",
+      },
+    });
+    return resp.data;
+  }
+
   return {
     enter,
     devs,
@@ -78,5 +92,7 @@ export default function createAPI() {
     dislike,
     undislike,
     disliked,
+
+    updateProfilePic,
   };
 }

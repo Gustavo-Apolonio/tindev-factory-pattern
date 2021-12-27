@@ -29,7 +29,7 @@ export default function Profile() {
     <div>
       <Header dev={dev} page="profile" />
       <Container>
-        <PictureSide />
+        <PictureSide dev={dev} token={token} />
         <Div />
         <InfoSide />
       </Container>

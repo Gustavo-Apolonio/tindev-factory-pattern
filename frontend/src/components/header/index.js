@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import {
@@ -23,7 +23,7 @@ export default function Header(props) {
 
   const dev = props.dev;
 
-  const { name, avatar } = dev;
+  const { name, avatar: avatarDev } = dev;
 
   let firstName = name.includes(" ")
     ? name.substring(0, name.indexOf(" "))
@@ -46,6 +46,16 @@ export default function Header(props) {
 
   const page = props.page;
 
+  const [avatar, setAvatar] = useState(avatarDev);
+
+  useEffect(() => {
+    const avatarPreview = avatar.includes("public/profiles/images")
+      ? `http://localhost:5000${avatar.substr(avatar.indexOf("/", 1))}`
+      : avatar;
+
+    setAvatar(avatarPreview);
+  }, [avatar]);
+  
   return (
     <Container>
       <Profile id="menu">
