@@ -3,6 +3,17 @@ import bcrypt from "bcrypt";
 import createDevRes from "../models/res/DevRes.js";
 import createProfileDevRes from "../models/res/ProfileDevRes.js";
 
+import dotenv from "dotenv";
+dotenv.config();
+
+function avatarWebDisplay(avatar) {
+  avatar = avatar.includes("public/profiles/images")
+    ? `${process.env.SERVER_ENV}${avatar.substr(avatar.indexOf("/", 1))}`
+    : avatar;
+
+  return avatar;
+}
+
 export default function createDevUtils() {
   async function encryptPassword(password) {
     if (password === "") return "";
@@ -35,6 +46,8 @@ export default function createDevUtils() {
   }
 
   function ToProfileResponse(dev) {
+    let avatar = avatarWebDisplay(dev.avatar);
+
     return createProfileDevRes(
       dev._id,
       dev.git_user_exists,
@@ -42,12 +55,15 @@ export default function createDevUtils() {
       dev.user,
       dev.password,
       dev.bio,
-      dev.avatar
+      dev.avatar,
+      avatar
     );
   }
 
   function ToResponse(dev) {
-    return createDevRes(dev._id, dev.name, dev.bio, dev.avatar);
+    let avatar = avatarWebDisplay(dev.avatar);
+
+    return createDevRes(dev._id, dev.name, dev.bio, avatar);
   }
 
   function ToResponses(devs) {

@@ -5,7 +5,8 @@ export default function createProfileDevRes(
   user,
   password,
   bio,
-  avatar
+  avatar,
+  webDisplay
 ) {
   return {
     id,
@@ -15,5 +16,6 @@ export default function createProfileDevRes(
     password,
     bio,
     avatar,
+    webDisplay,
   };
 }

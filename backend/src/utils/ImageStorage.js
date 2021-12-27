@@ -5,6 +5,9 @@ import path from "path";
 import fs from "fs";
 import util from "util";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 const acceptableFormats = [
   "png",
   "jfif",
@@ -60,9 +63,14 @@ export default function createImageStorage() {
       throw "Unacceptable file format given...";
     }
 
+    const path = `${destination.substr(
+      destination.indexOf("/", 1)
+    )}${filename}`;
+
     const file = {
       originalname,
-      path: `${destination}${filename}`,
+      path,
+      webDisplay: `${process.env.SERVER_ENV}${path}`,
     };
 
     req.body.avatar = file;
